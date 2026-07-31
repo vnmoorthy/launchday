@@ -274,17 +274,9 @@ export function MissionControl({
           </div>
         </div>
 
-        <div className="orbit-stage" aria-label="Stylized view of Earth from orbit">
-          <div className="orbit-line orbit-line-one" />
-          <div className="orbit-line orbit-line-two" />
-          <div className="orbit-satellite"><span /> <span /> <span /></div>
-          <div className="earth-glow" />
-          <div className="earth">
-            <div className="earth-land land-one" />
-            <div className="earth-land land-two" />
-            <div className="earth-atmosphere" />
-          </div>
-          <div className="scene-caption"><span className="live-dot" /> EARTH VIEW · PRIVATE</div>
+        <div className="orbit-stage" aria-label="Earth at night, photographed from orbit">
+          <div className="scene-caption"><span className="live-dot" /> ISS NIGHT PASS · PRIVATE PREVIEW</div>
+          <div className="orbit-sighting" aria-hidden="true"><span>01</span><i /> EARTH / NIGHT / 400KM</div>
           <div className="orbit-console">
             <div className="orbit-console-top"><span>MISSION PULSE</span><strong>T−49 DAYS</strong></div>
             <div className="orbit-console-body"><div className="orbit-progress"><i style={{ width: `${mission.readiness}%` }} /></div><strong>{mission.readiness}% ready</strong></div>
