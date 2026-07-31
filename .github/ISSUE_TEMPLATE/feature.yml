@@ -1,0 +1,19 @@
+name: Consent-first feature
+description: Propose a feature by describing the payer, beneficiary, and audience.
+title: "idea: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Real-world scenario
+      description: Who pays, who benefits, and who should gain access?
+    validations:
+      required: true
+  - type: textarea
+    id: consent
+    attributes:
+      label: Consent behavior
+      description: What should happen when the beneficiary changes or revokes consent?
+    validations:
+      required: true

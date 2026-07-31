@@ -1,139 +1,183 @@
-# LaunchDay
+<p align="center">
+  <img src="./public/launchday-lockup.svg" width="360" alt="LaunchDay — Consent Checkout for civilian spaceflight" />
+</p>
 
-**Consent Checkout for civilian spaceflight.** LaunchDay separates the person who pays, the passenger who benefits, and the audience allowed to participate in a private mission memory.
+<p align="center">
+  <strong>Consent Checkout for civilian spaceflight.</strong><br />
+  A payment primitive where the payer, beneficiary, and audience are three different people—with consent enforced in the product, not a disclaimer.
+</p>
+
+<p align="center">
+  <a href="#the-idea"><img src="https://img.shields.io/badge/spaceflight-consent--first-8CF5E5?style=flat-square&labelColor=10273A" alt="Consent-first" /></a>
+  <a href="#architecture"><img src="https://img.shields.io/badge/identity-Auth0-EB5424?style=flat-square&labelColor=10273A" alt="Auth0" /></a>
+  <a href="#architecture"><img src="https://img.shields.io/badge/payments-Stripe-635BFF?style=flat-square&labelColor=10273A" alt="Stripe" /></a>
+  <a href="#run-locally"><img src="https://img.shields.io/badge/demo-mode_zero--config-4DD0E1?style=flat-square&labelColor=10273A" alt="Demo mode" /></a>
+  <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-F5B335?style=flat-square&labelColor=10273A" alt="MIT license" /></a>
+</p>
+
+<p align="center">
+  <a href="#watch-the-demo">Watch the demo</a> · <a href="#architecture">Architecture</a> · <a href="#run-locally">Run locally</a> · <a href="./DEMO_RUNBOOK.md">Demo runbook</a> · <a href="./CONTRIBUTING.md">Contribute</a>
+</p>
+
+---
+
+## The idea
+
+Space tourism will create a new category of purchase: **one person pays for another person’s once-in-a-lifetime experience**. Existing checkout systems collapse the important identities into one account. That is wrong for a parent sponsoring a daughter’s flight, an employer funding an astronaut experience, or a partner gifting a mission.
+
+LaunchDay creates a **Consent Checkout**:
+
+| Identity | What they can do | What they cannot do |
+| --- | --- | --- |
+| **Sponsor** | Fund the Family Mission Room through Stripe Checkout | View or share the passenger’s private mission by virtue of payment |
+| **Passenger** | Own the entitlement and invite a named audience | Be locked out by the sponsor |
+| **Guest** | Experience private memories only while invited | Change payment, ownership, or audience policy |
+
+The result is a believable new payment behavior—not a themed checkout page. Stripe settles payment; Auth0 proves the human; LaunchDay enforces the relationship between them.
+
+## Watch the demo
+
+**The 90-second judge flow**
+
+1. Open the Mission Control demo—no accounts or credentials required.
+2. Choose **Unlock Family Mission Room** and select **Sponsor Maya**.
+3. Continue to Stripe; demo mode activates the same entitlement locally.
+4. Invite a guest, then revoke them. The passenger retains ownership; payment remains valid.
+5. Generate **First Orbit**, a private visual memory with optional ElevenLabs narration.
+
+The product always works in demo mode, then turns on the live providers when credentials are added.
+
+## Architecture
+
+<p align="center">
+  <img src="./public/launchday-architecture.svg" width="100%" alt="LaunchDay system architecture showing the consent checkout control plane and private mission experience plane" />
+</p>
+
+```mermaid
+flowchart LR
+  sponsor["Sponsor"] --> checkout["Stripe Checkout"]
+  passenger["Passenger"] --> auth["Auth0\nidentity"]
+  guest["Named guest"] --> auth
+  checkout --> webhook["Verified webhook"] --> entitlement["Mission entitlement\nbeneficiary ≠ payer"]
+  auth --> policy["LaunchDay policy engine"]
+  entitlement --> policy
+  policy --> room["Private Mission Room"]
+  room --> blob["Private Vercel Blob"]
+  room --> neon["Neon / Drizzle"]
+  blob --> story["First Orbit\nOpenRouter + ElevenLabs"]
+```
+
+Read the detailed security and data-flow rationale in [**ARCHITECTURE.md**](./ARCHITECTURE.md).
 
 ## What is built
 
-- **Consent Checkout:** Stripe Checkout payment creates an entitlement for the passenger’s Auth0 identity, not the cardholder.
-- **Private Family Mission Room:** the passenger invites named people; guests have time-bound access and the passenger can revoke it live.
-- **First Orbit:** personal images become a short, structured private story, with ElevenLabs narration when configured.
-- **Direct private uploads:** the browser uploads directly to a private Vercel Blob store; LaunchDay streams files back only after identity and access-policy checks.
-- **Demo-safe:** the app has a fully interactive demo mode, so the pitch works before provider accounts are attached.
+- **Beneficiary-bound payment:** a verified `checkout.session.completed` webhook activates the passenger’s entitlement—not the payer’s access.
+- **Auth0 identity boundary:** passenger owner actions require a verified Auth0 identity; guests are matched to explicit identity-specific invitations.
+- **Revocable family access:** guests have expiry-aware grants and can lose access instantly without affecting the payment.
+- **Private media by default:** direct upload tokens are created only for the mission owner; reads go through an authorization proxy before the private Blob is streamed.
+- **First Orbit:** private images become a structured, cinematic story. OpenRouter and ElevenLabs are optional; a clearly marked local fallback keeps the demo dependable.
+- **Neon-ready persistence:** Drizzle stores the mission policy and entitlement in Neon when configured, with a safe in-memory demo fallback for judges.
 
-## Run the demo
+## Product principles
+
+1. **Payment is not consent.** Paying is a funding event, never an audience grant.
+2. **The passenger is sovereign.** The beneficiary owns audience decisions and can revoke them.
+3. **Private by default.** Media and narration are shared only after an identity and policy check.
+4. **Trust must be demoable.** Every enforcement point has a visible, understandable product consequence.
+
+## Run locally
 
 ```bash
+git clone https://github.com/vnmoorthy/launchday.git
+cd launchday
 npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). No credentials are required for the demo fallback.
-
-The 90-second path:
-
-1. Choose **Unlock Family Mission Room**.
-2. Select **Sponsor Maya** to show that payer, beneficiary, and audience are different people.
-3. Continue to Stripe. In demo mode, LaunchDay activates the entitlement locally.
-4. Invite a guest, then revoke access. The payment remains valid and Maya retains ownership.
-5. Regenerate **First Orbit** and play narration.
+Open [http://localhost:3000](http://localhost:3000). The out-of-the-box experience is intentionally credential-free.
 
 ## Connect the live stack
 
 Copy `.env.example` to `.env.local`, set `NEXT_PUBLIC_DEMO_MODE=false`, and never commit that file.
 
-### 1. Provision the hackathon stack
+| Provider | Needed values | Why |
+| --- | --- | --- |
+| Auth0 | `AUTH0_DOMAIN`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET`, `AUTH0_SECRET` | Proves the passenger and invited guests are who they claim to be |
+| Stripe | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `APP_BASE_URL` | Creates Checkout and verifies entitlement activation |
+| Neon | `DATABASE_URL` | Persists mission policy and entitlement records |
+| Vercel Blob | `BLOB_READ_WRITE_TOKEN` | Stores private passenger media |
+| OpenRouter | `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` | Creates a schema-bound First Orbit story |
+| ElevenLabs | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | Streams optional private narration |
 
-From this directory, after authenticating with the Stripe CLI and installing the Projects plugin:
+### Auth0
 
-```bash
-stripe projects init launchday
-stripe projects add auth0/client
-stripe projects add neon/postgres
-stripe projects add vercel/project
-stripe projects add openrouter/api
-stripe projects add elevenlabs/tts
-stripe projects env --pull
-```
-
-Create `AUTH0_SECRET` with `openssl rand -hex 32`. Stripe Projects provisions infrastructure; use a separate Stripe sandbox secret key for the checkout flow.
-
-### 2. Configure Auth0
-
-Set the following in the Auth0 application dashboard:
+Set these URLs in the Auth0 application dashboard for both local and deployed domains:
 
 ```text
-Allowed Callback URL: http://localhost:3000/auth/callback
-Allowed Logout URL: http://localhost:3000
-Allowed Web Origin: http://localhost:3000
+Allowed Callback URL: https://YOUR_DOMAIN/auth/callback
+Allowed Logout URL: https://YOUR_DOMAIN
+Allowed Web Origin: https://YOUR_DOMAIN
 ```
 
-Add the deployed URL equivalents before shipping. LaunchDay uses Auth0 Next.js SDK v4, which mounts auth at `/auth/*` through `src/proxy.ts`.
+LaunchDay uses Auth0 Next.js SDK v4 and mounts auth routes at `/auth/*` through `src/proxy.ts`.
 
-### 3. Create the database
+### Stripe
 
-```bash
-npm run db:push
-```
-
-The single `missions` record stores the private entitlement and audience-policy data. If Neon is absent or unmigrated, the app automatically keeps the demo in an in-memory store.
-
-### 4. Add Vercel Blob
-
-Create a **private** Blob store in Vercel and add:
-
-```text
-BLOB_READ_WRITE_TOKEN=...
-NEXT_PUBLIC_VERCEL_BLOB_ENABLED=true
-```
-
-The upload token is minted only after a LaunchDay session exists. Private images are rendered through `/api/media` after re-checking the current user’s Mission Room permission. When a story model is enabled, private Blob media is read server-side and sent as an in-memory vision input; the browser never receives an unprotected Blob URL.
-
-### 5. Connect Stripe Checkout and webhook
-
-```text
-STRIPE_SECRET_KEY=sk_test_...
-STRIPE_WEBHOOK_SECRET=whsec_...
-APP_BASE_URL=http://localhost:3000
-```
-
-For local testing:
+Use a **test-mode** secret key while developing. Forward events locally with:
 
 ```bash
 stripe listen --forward-to localhost:3000/api/stripe/webhook
 ```
 
-Copy the returned `whsec_...` secret into `.env.local`. The verified `checkout.session.completed` webhook is the only live path that activates a paid entitlement.
+Copy the returned `whsec_...` value into `.env.local`. Only the signature-verified webhook activates a live paid entitlement.
 
-### 6. Add AI services
-
-```text
-OPENROUTER_API_KEY=...
-OPENROUTER_MODEL=google/gemini-3.1-flash-lite
-ELEVENLABS_API_KEY=...
-ELEVENLABS_VOICE_ID=...
-```
-
-OpenRouter receives a strict JSON-schema request for the First Orbit story. ElevenLabs streams `eleven_flash_v2_5` audio to the browser. Without either credential, the UI uses a clearly labelled local fallback.
-
-### 7. Deploy to Vercel
-
-After the Vercel project exists and its credentials are in your environment:
+### Database
 
 ```bash
-npm run build
-npx vercel deploy --prod --token="$VERCEL_TOKEN"
+npm run db:push
 ```
 
-Set `APP_BASE_URL` to the deployed HTTPS URL, add that URL to Auth0’s callback, logout, and web-origin settings, then redeploy. Configure the Stripe webhook endpoint as:
+## Quality bar
+
+```bash
+npm run lint
+npm run build
+```
+
+Continuous integration runs both checks on every pull request.
+
+## Repository guide
 
 ```text
-https://YOUR_DOMAIN/api/stripe/webhook
+src/app/api/checkout       Stripe Checkout with beneficiary metadata
+src/app/api/stripe/webhook Verified payment activation
+src/lib/authorization      Owner and guest policy enforcement
+src/app/api/upload         Direct, private Blob upload authorization
+src/app/api/media          Private-media authorization proxy
+src/app/api/story          Schema-bound visual story generation
+src/app/api/narration      Authorized narration streaming
+src/db                     Neon + Drizzle persistence
 ```
 
-## Security boundary
+## Safety and scope
 
-- No payment card data touches LaunchDay.
-- A Stripe webhook signature is verified before activating a paid feature.
-- The payer never receives story access merely by paying.
-- Mission owner actions require the passenger’s Auth0 identity; non-owner guests are read-only.
-- Invites are identity-specific, can expire, and can be revoked.
-- This product is a personal orientation and memory layer—not medical, safety, fitness, or flight-clearance software.
+LaunchDay is a private orientation and memory layer. It is **not** medical, flight-safety, fitness, or flight-clearance software. Read [**SECURITY.md**](./SECURITY.md) before deploying a live experience.
 
-## Key files
+## Roadmap
 
-- `src/app/api/checkout/route.ts` — creates Stripe Checkout with beneficiary and policy metadata.
-- `src/app/api/stripe/webhook/route.ts` — verifies payment events and mints entitlements.
-- `src/app/api/invites/route.ts` — creates named audience grants.
-- `src/app/api/media/route.ts` — authorizes reads of private Blob media.
-- `src/lib/mission-store.ts` — Neon-backed mission persistence with a demo fallback.
-- `src/components/mission-control.tsx` — the full passenger demo surface.
+- [x] Separate payer, beneficiary, and audience in the checkout model
+- [x] Auth0-backed ownership and explicit guest grants
+- [x] Stripe webhook entitlement activation
+- [x] Private media and story experience
+- [ ] Auth0 Organizations for commercial operators and concierge teams
+- [ ] Stripe Connect for operator-sponsored mission packages
+- [ ] Passenger consent receipts and auditable audience-policy events
+- [ ] Multi-mission family archive
+
+## Contributing
+
+Great projects are built in public. Read [**CONTRIBUTING.md**](./CONTRIBUTING.md), open an issue with a crisp use case, and keep the core principle intact: **funding is never permission**.
+
+## License
+
+Released under the [MIT License](./LICENSE).

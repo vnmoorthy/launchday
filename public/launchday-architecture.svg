@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980" role="img" aria-labelledby="title description">
+  <title id="title">LaunchDay consent checkout architecture</title>
+  <desc id="description">A two-plane system diagram connecting sponsor payment, Auth0 identity, policy decisions, private media, data, and AI services.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#08131D"/><stop offset="1" stop-color="#102D42"/></linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8CF5E5"/><stop offset="1" stop-color="#4DD0E1"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#FFD477"/><stop offset="1" stop-color="#F5B335"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#79B9C6"/></marker>
+    <style>
+      .title{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}.eyebrow{font-size:17px;font-weight:700;letter-spacing:3px}.heading{font-size:36px;font-weight:750;letter-spacing:-1px}.body{font-size:18px;font-weight:500}.small{font-size:15px;font-weight:650;letter-spacing:1px}.node{fill:#10283A;stroke:#376277;stroke-width:1.5}.node-title{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:21px;font-weight:700;fill:#F4FAFB}.node-copy{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;font-weight:500;fill:#ABC2CB}.label{font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;font-weight:700;fill:#9AB4C0}
+    </style>
+  </defs>
+  <rect width="1600" height="980" rx="36" fill="url(#background)"/>
+  <circle cx="1425" cy="105" r="260" fill="#1E6675" opacity=".15"/>
+  <circle cx="135" cy="930" r="270" fill="#CB8B22" opacity=".09"/>
+  <text x="72" y="72" class="title eyebrow" fill="#8CF5E5">LAUNCHDAY SYSTEM MAP</text>
+  <text x="72" y="122" class="title heading" fill="#F4FAFB">Payment is not permission.</text>
+  <text x="72" y="155" class="title body" fill="#ABC2CB">Two deliberately separate planes keep passenger consent enforceable.</text>
+
+  <rect x="62" y="205" width="1476" height="285" rx="24" fill="#0D2333" stroke="#2E5F72" stroke-width="1.5"/>
+  <text x="94" y="246" class="title eyebrow" fill="#F5B335">01 · CONSENT CONTROL PLANE</text>
+  <text x="94" y="279" class="title body" fill="#C0D2D8">Stripe settles funding. Auth0 proves the person. LaunchDay makes the audience decision.</text>
+
+  <rect x="100" y="323" width="212" height="112" rx="18" class="node"/>
+  <circle cx="133" cy="357" r="14" fill="url(#gold)"/><text x="157" y="362" class="node-title">Sponsor</text><text x="124" y="400" class="node-copy">Funds the room</text>
+  <rect x="398" y="323" width="240" height="112" rx="18" class="node" stroke="#7562BA"/>
+  <rect x="422" y="343" width="54" height="28" rx="8" fill="#635BFF"/><text x="488" y="362" class="node-title">Stripe Checkout</text><text x="422" y="400" class="node-copy">Payment event</text>
+  <rect x="748" y="305" width="312" height="148" rx="20" fill="#133246" stroke="url(#teal)" stroke-width="2.5" filter="url(#glow)"/>
+  <circle cx="788" cy="353" r="18" fill="url(#teal)"/><text x="822" y="360" class="node-title">Mission entitlement</text><text x="780" y="397" class="node-copy">Beneficiary-bound · webhook verified</text><text x="780" y="424" class="node-copy">Audience policy stored separately</text>
+  <rect x="1170" y="323" width="260" height="112" rx="18" class="node" stroke="#A65A37"/>
+  <circle cx="1204" cy="357" r="14" fill="#EB5424"/><text x="1228" y="362" class="node-title">Auth0 identity</text><text x="1194" y="400" class="node-copy">Passenger and guests</text>
+  <path d="M312 379H382" stroke="#79B9C6" stroke-width="3" marker-end="url(#arrow)"/><text x="320" y="362" class="label">PAY</text>
+  <path d="M638 379H732" stroke="#79B9C6" stroke-width="3" marker-end="url(#arrow)"/><text x="645" y="362" class="label">SIGNED WEBHOOK</text>
+  <path d="M1170 379H1076" stroke="#79B9C6" stroke-width="3" marker-end="url(#arrow)"/><text x="1090" y="362" class="label">IDENTITY</text>
+
+  <rect x="62" y="532" width="1476" height="360" rx="24" fill="#0D2333" stroke="#2E5F72" stroke-width="1.5"/>
+  <text x="94" y="573" class="title eyebrow" fill="#8CF5E5">02 · PRIVATE MISSION EXPERIENCE</text>
+  <text x="94" y="606" class="title body" fill="#C0D2D8">Every sensitive read requires a fresh identity and policy decision.</text>
+  <rect x="100" y="660" width="250" height="144" rx="18" class="node" stroke="#2E9CA2"/>
+  <circle cx="134" cy="700" r="16" fill="url(#teal)"/><text x="162" y="706" class="node-title">Policy engine</text><text x="124" y="742" class="node-copy">Owner · guest · operator</text><text x="124" y="768" class="node-copy">revocable grants</text>
+  <rect x="438" y="660" width="250" height="144" rx="18" class="node"/>
+  <text x="464" y="707" class="node-title">Private Vercel Blob</text><text x="464" y="742" class="node-copy">Direct uploads</text><text x="464" y="768" class="node-copy">authorized media proxy</text>
+  <rect x="776" y="660" width="250" height="144" rx="18" class="node"/>
+  <text x="802" y="707" class="node-title">Neon + Drizzle</text><text x="802" y="742" class="node-copy">Mission policy</text><text x="802" y="768" class="node-copy">entitlement record</text>
+  <rect x="1114" y="640" width="320" height="184" rx="20" fill="#133246" stroke="url(#gold)" stroke-width="2"/>
+  <text x="1142" y="689" class="node-title">First Orbit</text><text x="1142" y="727" class="node-copy">OpenRouter · schema-bound story</text><text x="1142" y="755" class="node-copy">ElevenLabs · private narration</text><rect x="1142" y="778" width="198" height="24" rx="12" fill="#28465A"/><text x="1155" y="796" class="small" fill="#8CF5E5">OPTIONAL PROVIDERS</text>
+  <path d="M350 732H422" stroke="#79B9C6" stroke-width="3" marker-end="url(#arrow)"/><path d="M350 762H760" stroke="#54798A" stroke-width="2" stroke-dasharray="8 8" marker-end="url(#arrow)"/><path d="M688 732H1098" stroke="#79B9C6" stroke-width="3" marker-end="url(#arrow)"/><path d="M1026 732H1098" stroke="#79B9C6" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="72" y="940" class="title body" fill="#8FAAB5">The payer never becomes an audience member simply by completing checkout.</text>
+  <circle cx="1490" cy="935" r="8" fill="#8CF5E5"/><text x="1460" y="941" text-anchor="end" class="title small" fill="#8CF5E5">LAUNCHDAY</text>
+</svg>

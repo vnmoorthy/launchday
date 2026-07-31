@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="220" viewBox="0 0 1080 220" role="img" aria-labelledby="title description">
+  <title id="title">LaunchDay</title>
+  <desc id="description">LaunchDay logo with a circular orbit mark</desc>
+  <defs>
+    <linearGradient id="orbit" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8CF5E5"/>
+      <stop offset="1" stop-color="#4DD0E1"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F5B335"/>
+      <stop offset="1" stop-color="#FF765C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="220" rx="32" fill="#0B1722"/>
+  <g transform="translate(42 40)">
+    <circle cx="70" cy="70" r="54" fill="none" stroke="url(#orbit)" stroke-width="8" stroke-dasharray="260 80" transform="rotate(-36 70 70)"/>
+    <circle cx="70" cy="70" r="24" fill="#DDFDF7"/>
+    <path d="M70 34c16 18 22 36 17 54-5 18-14 29-17 32-3-3-12-14-17-32-5-18 1-36 17-54Z" fill="url(#flame)"/>
+    <circle cx="121" cy="43" r="7" fill="#F5B335"/>
+  </g>
+  <text x="200" y="105" fill="#F6FAFB" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="78" font-weight="700" letter-spacing="-3">LaunchDay</text>
+  <text x="204" y="154" fill="#9FB6C2" font-family="ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="24" font-weight="600" letter-spacing="5">CONSENT CHECKOUT</text>
+</svg>
