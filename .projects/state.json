@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "providers": {
+    "auth0": {
+      "name": "Auth0"
+    }
+  },
+  "resources": {
+    "auth0-free": {
+      "name": "auth0-free",
+      "providerName": "Auth0",
+      "serviceId": "free"
+    },
+    "launchday-auth0": {
+      "name": "launchday-auth0",
+      "providerName": "Auth0",
+      "serviceId": "client"
+    }
+  }
+}
