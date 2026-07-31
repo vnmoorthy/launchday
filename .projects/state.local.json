@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "project": {
+    "catalog": "prod",
+    "initializedAt": "2026-07-31T01:03:22.668Z",
+    "merchantDisplayName": "Amperes",
+    "merchantId": "acct_1Tz4Uq0nKnlJ5256",
+    "projectId": "project_61V8SoUNUXYKKvz9z16V8SSC0rSQjXFK4oESDBLH63PM",
+    "projectName": "launchday"
+  },
+  "providers": {
+    "auth0": {
+      "accountRequestId": "facctrq_61V8SrU17xBKRKUiC16V8SSC0rSQjXFK4oESDBLH60jA",
+      "configuration": {
+        "locality": "us",
+        "naming_prefix": "launchday"
+      },
+      "linkedAt": "2026-07-31T01:06:34.703Z",
+      "providerId": "prvdr_61UVctyxfLOj4FpVw5Bmi",
+      "providerName": "Auth0",
+      "redirectUrl": null,
+      "requestedAt": "2026-07-31T01:06:34.702Z",
+      "status": "complete"
+    }
+  },
+  "resources": {
+    "auth0-free": {
+      "configuration": {},
+      "createdAt": "2026-07-31T01:06:59.129Z",
+      "lastRevealedAt": "2026-07-31T01:06:59.394Z",
+      "lastStatus": "complete",
+      "name": "auth0-free",
+      "providerId": "prvdr_61UVctyxfLOj4FpVw5Bmi",
+      "providerName": "Auth0",
+      "resourceId": "fres_61V8Srwv0jCR0b5f816V8SSC0rSQjXFK4oESDBLH6Xiq",
+      "serviceId": "free"
+    },
+    "launchday-auth0": {
+      "configuration": {
+        "name": "launchday-web"
+      },
+      "createdAt": "2026-07-31T01:07:22.393Z",
+      "lastRevealedAt": "2026-07-31T01:07:22.650Z",
+      "lastStatus": "complete",
+      "name": "launchday-auth0",
+      "providerId": "prvdr_61UVctyxfLOj4FpVw5Bmi",
+      "providerName": "Auth0",
+      "resourceId": "fres_61V8SsJkgT35rrfFV16V8SSC0rSQjXFK4oESDBLH6NuC",
+      "serviceId": "client"
+    }
+  }
+}
