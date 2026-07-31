@@ -58,8 +58,15 @@ The product always works in demo mode, then turns on the live providers when cre
 ## Architecture
 
 <p align="center">
-  <img src="./public/launchday-architecture.svg" width="100%" alt="LaunchDay system architecture showing the consent checkout control plane and private mission experience plane" />
+  <img src="./public/launchday-architecture.png" width="100%" alt="LaunchDay consent checkout architecture showing independent payment, identity, entitlement, audience policy, private media, and AI services" />
 </p>
+
+<p align="center">
+  <strong>The core invariant:</strong> completing checkout funds an entitlement; it never grants an audience permission.
+</p>
+
+<details>
+<summary>View the executable data flow</summary>
 
 ```mermaid
 flowchart LR
@@ -74,6 +81,8 @@ flowchart LR
   room --> neon["Neon / Drizzle"]
   blob --> story["First Orbit\nOpenRouter + ElevenLabs"]
 ```
+
+</details>
 
 Read the detailed security and data-flow rationale in [**ARCHITECTURE.md**](./ARCHITECTURE.md).
 
