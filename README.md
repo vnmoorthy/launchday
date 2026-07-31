@@ -19,6 +19,14 @@
   <a href="#watch-the-demo">Watch the demo</a> · <a href="#architecture">Architecture</a> · <a href="#run-locally">Run locally</a> · <a href="./DEMO_RUNBOOK.md">Demo runbook</a> · <a href="./CONTRIBUTING.md">Contribute</a>
 </p>
 
+<p align="center">
+  <img src="./public/launchday-orbit-hero-nasa.jpg" width="100%" alt="Earth at night, photographed from the International Space Station" />
+</p>
+
+<p align="center">
+  <sub>Hero image: NASA, <a href="https://images.nasa.gov/details-iss058e005282">ISS058-E-005282</a>.</sub>
+</p>
+
 ---
 
 ## The idea
